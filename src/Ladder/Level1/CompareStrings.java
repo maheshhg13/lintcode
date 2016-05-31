@@ -1,4 +1,4 @@
-package lintcode;
+package Ladder.Level1;
 
 //Compare two strings A and B, determine whether A contains all of the characters in B.
 //

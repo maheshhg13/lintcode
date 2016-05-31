@@ -1,4 +1,4 @@
-package lintcode;
+package Ladder.Level1;
 
 //Given k strings, find the longest common prefix (LCP).
 //

@@ -1,4 +1,4 @@
-package lintcode;
+package Ladder.Level1;
 
 //Clarification
 //What is Anagram?

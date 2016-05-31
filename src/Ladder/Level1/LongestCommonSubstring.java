@@ -1,4 +1,4 @@
-package lintcode;
+package Ladder.Level1;
 
 //Given two strings, find the longest common substring.
 //
