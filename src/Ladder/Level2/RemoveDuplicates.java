@@ -10,15 +10,26 @@ package Ladder.Level2;
 
 public class RemoveDuplicates {
 	
-	public int removeDuplicates(int[] nums) {
-        int ptr = nums.length-1;
-        int i=1;
-        while(i<=ptr){
-        	if(nums[i-1]==nums[i]){
-        		
-        	}
-        }
-        return ptr;
+	public static int removeDuplicates(int[] nums) {
+		 if(nums==null || nums.length==0)
+	            return 0;
+	            
+	      int i=1;
+	      int j=0;
+	      while(i<nums.length && j<nums.length){
+	          while(i<nums.length && j<nums.length && nums[j]==nums[i]){
+	              i++;
+	          }
+	          
+	          if(i<nums.length && j<nums.length){
+	              j++;
+	              nums[j]=nums[i];
+	          }
+	      }
+	      return j+1;
     }
+	public static void main(String[] args) {
+		System.out.println(removeDuplicates(new int[]{-10,0,1,2,3}));
+	}
 
 }
