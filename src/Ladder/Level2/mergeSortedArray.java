@@ -1,7 +1,7 @@
 package Ladder.Level2;
 
 public class mergeSortedArray {
-	public void mergeSortedArray(int[] A, int m, int[] B, int n) {
+	public mergeSortedArray(int[] A, int m, int[] B, int n) {
 		int total = m + n - 1;
 		int aCtr = m - 1;
 		int bCtr = n - 1;
