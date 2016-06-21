@@ -5,18 +5,18 @@ public class ReorderList {
         if(head==null || head.next==null){
             return;
         }
-        ListNode dummyHead = head;
-        while(dummyHead!=null){
-            ListNode tracker = dummyHead.next;
-            ListNode m = dummyHead;
+
+        while(head!=null){
+            ListNode tracker = head.next;
+            ListNode m = head;
             while(tracker!=null && tracker.next!=null){
                 tracker = tracker.next;
                 m = m.next;
             }
-            if(m==dummyHead){
+            if(m==head){
                 return;
             }
-            dummyHead = dummyHead.next;
+            ListNode dummyHead = head.next;
             tracker.next = head.next;
             head.next = tracker;
             m.next=null;
