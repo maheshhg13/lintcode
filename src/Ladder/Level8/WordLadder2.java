@@ -3,59 +3,92 @@ package Ladder.Level8;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
+import java.util.Stack;
 
 
 public class WordLadder2 {
-	int min = Integer.MAX_VALUE;
-    Map<Integer, List<List<String>>> map = new HashMap<Integer, List<List<String>>>();
-	public List<List<String>> findLadders(String start, String end, Set<String> dict) {
-		List<String> current = new ArrayList<String>();
-		current.add(start);
-		dict.remove(start);
-		dict.add(end);
-		helper(current, end, dict);
-        return map.get(min);
-    }
+
+	private boolean isOneEditDistance(String newWord, String originalWord){
+	    int count=0;
+	    for(int i=0;i<newWord.length();i++){
+	        if(newWord.charAt(i)!=originalWord.charAt(i)){
+	            count++;
+	            if(count>1){
+	                return false;
+	            }
+	        }
+	    }
+	    return true;
+	}
 	
-	private void helper(List<String> current, String end, Set<String> dict){
-		String lastWord = current.get(current.size()-1);
-		if(lastWord.equals(end)){
-		    if(current.size()<min)
-		    {
-		        
-		        min=current.size();
-		        map.put(min, new ArrayList<List<String>>());
-		        map.get(min).add(new ArrayList<String>(current));
-		    }else if(current.size()==min){
-		        map.get(min).add(new ArrayList<String>(current));
-		    }
-			return;
+	
+	public List<List<String>> findLadders(String start, String end, Set<String> dict){
+		List<List<String>> res = new ArrayList<List<String>>();
+		Map<String, List<String>> nodeNeighbours = new HashMap<String, List<String>>();
+		Map<String, Integer> dist = new HashMap<String, Integer>();
+		bfs(start, end, dict, nodeNeighbours, dist);
+		dfs(start, end, nodeNeighbours, dist, new ArrayList<String>(), res);
+		return res;
+	}
+	public void bfs(String start, String end, Set<String> dict, Map<String, List<String>> nodeNeighbours, Map<String, Integer> dist){
+		for(String str:dict){
+			nodeNeighbours.put(str, new ArrayList<String>());
 		}
+		Queue<String> q = new LinkedList<String>();
+		q.offer(start);
+		dist.put(start, 0);
 		
-		if(current.size()>=min){
-		    return;
-		}
-		dict.removeAll(current);
-		StringBuilder currentWord = new StringBuilder(lastWord);
-		for(int i=0;i<lastWord.length();i++){
-			char original = currentWord.charAt(i);
-			for(char ch='a';ch<='z';ch++){
-				if(ch==currentWord.charAt(i)){
-					continue;
-				}
-				currentWord.setCharAt(i, ch);
-				String mutated = currentWord.toString();
+		while(!q.isEmpty()){
+			int count = q.size();
+			boolean foundEnd = false;
+			for(int i=0;i<count;i++){
+				String curr = q.poll();
+				int currDist = dist.get(curr);
+				List<String> neigh = new ArrayList<String>();
+				neigh = getNeighbours(curr, dict);
 				
-				if(dict.contains(mutated) && current.size()<min){
-					current.add(mutated);
-		            helper(current, end, new HashSet<String>(dict));
-		            current.remove(mutated);
+				for(String n:neigh){
+					
+					if(!dist.containsKey(n)){
+						dist.put(n, currDist+1);
+						if(n.equals(end))
+							foundEnd=true;
+						else
+							q.offer(n);
+						
+					}
 				}
 			}
-			currentWord.setCharAt(i, original);
+			if(foundEnd)
+				break;
 		}
+	}
+	private List<String> getNeighbours(String curr, Set<String> dict) {
+		List<String> ret = new ArrayList<String>();
+		for(String str:dict){
+			if(isOneEditDistance(str, curr)){
+				ret.add(str);
+			}
+		}
+		return ret;
+	}
+	
+	private void dfs(String start, String end, Map<String, List<String>> nodeNeighbours, Map<String, Integer> dist, List<String> solution, List<List<String>> ret){
+		solution.add(start);
+		if(start.equals(end)){
+			ret.add(new ArrayList<String>(solution));
+		}else{
+			for(String next:nodeNeighbours.get(start)){
+				if(dist.get(start) == dist.get(next)-1){
+					dfs(next, end, nodeNeighbours, dist, solution, ret);
+				}
+			}
+		}
+		solution.remove(solution.size() - 1);
 	}
 }
