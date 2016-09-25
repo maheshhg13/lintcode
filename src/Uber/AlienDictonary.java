@@ -1,53 +1,57 @@
 package Uber;
-import java.util.*;
 public class AlienDictonary {
-	boolean cycle = false;
+	int count = 0;
 	public String alienOrder(String[] words) {
-        StringBuffer sb = new StringBuffer();
-        Map<Character, List<Character>> map = new HashMap<Character, List<Character>>();
-        int[] visited = new int[26];
-        for(int i=0;i<words.length-1;i++){
-        	for(int j=0;j<Math.min(words[i].length(), words[i+1].length());j++){
-        		char first = words[i].charAt(j);
-        		char second = words[i+1].charAt(j);
-        		if(!map.containsKey(first)){
-        			map.put(first, new ArrayList<Character>());
-        		}
-        		if(!map.containsKey(second)){
-        			map.put(second, new ArrayList<Character>());
-        		}
-        		if(first!=second){
-        			System.out.println(first+" comes before "+second);
-        			map.get(first).add(second);
-        			break;
-        		}
+        boolean[][] graph = new boolean[26][26];
+        int[] status = new int[26];
+        //int count = 0;
+        char[] result = new char[26];
+        buildGraph(words, graph, status);
+        for(int i=0;i<26;i++){
+        	if(status[i]==1 && !dfs(i, graph, status, result)){
+        		return "";
         	}
         }
-
-        while(!cycle && map.size()!=0){
-        	dfs(map.keySet().iterator().next(), visited, sb, map);
-        }
-        return cycle?"":sb.toString();
+        return new String(result, 0, count);
     }
 
-	private void dfs(Character next, int[] visited, StringBuffer sb,
-			Map<Character, List<Character>> map) {
-		if(cycle || !map.containsKey(next)){
-			return;
+	
+	private boolean dfs(int i, boolean[][] graph, int[] status, char[] result) {
+		if(status[i]==2){
+			return false;
 		}
-		if(visited[next-'a']==1){
-			cycle=true;
-			return;
+		status[i]=2;
+		for(int j=0;j<26;j++){
+			if(graph[i][j] && status[j]!=3 && !dfs(j, graph, status, result)){
+				return false;
+			}
 		}
-		visited[next-'a'] = 1;
-		for(char c:map.get(next)){
-			dfs(c, visited, sb, map);
+		status[i] = 3;
+		result[count++] = (char)(i+'a');
+		return true;
+	}
+
+
+	private void buildGraph(String[] words, boolean[][] graph, int[] status) {
+		for(int i=0;i<words.length;i++){
+			for(char ch:words[i].toCharArray()){
+				status[ch-'a']=1;
+			}
+			if(i>0){
+				for(int j=0;j<Math.min(words[i-1].length(), words[i].length());j++){
+					char c1=words[i].charAt(j);
+					char c2=words[i-1].charAt(j);
+					if(c1!=c2){
+						graph[c1-'a'][c2-'a'] = true;
+						break;
+					}
+				}
+			}
 		}
-		sb.insert(0, next);
-		visited[next-'a']=0;
-		map.remove(next);
 		
 	}
+
+
 	public static void main(String[] args) {
 		String[] temp = new String[]{"za","zb","ca","cb"};
 		System.out.println(new AlienDictonary().alienOrder(temp));
