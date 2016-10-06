@@ -4,7 +4,6 @@ public class AlienDictonary {
 	public String alienOrder(String[] words) {
         boolean[][] graph = new boolean[26][26];
         int[] status = new int[26];
-        //int count = 0;
         char[] result = new char[26];
         buildGraph(words, graph, status);
         for(int i=0;i<26;i++){

@@ -6,7 +6,7 @@ public class SearchForRange {
             return new int[]{-1};
         }
         int f = searchFirst(nums, 0, nums.length-1, target);
-        int l = searchFirst(nums, 0, nums.length-1, target);
+        int l = searchLast(nums, f, nums.length-1, target);
         return new int[]{f, l};
     }
     
@@ -33,7 +33,7 @@ public class SearchForRange {
         }
         while(start<=end){
             int mid = (start+end)/2;
-            System.out.println(mid);
+            //System.out.println(mid);
             if(nums[mid]==target && (mid==end || nums[mid+1]>target)){
                 return mid;
             }else if(nums[mid]>target){
@@ -44,4 +44,12 @@ public class SearchForRange {
         }
         return -1;
     }
+    
+    public static void main(String[] args) {
+		int[] temp = {1,2,3,3,3,3,3,3,4,5};
+		int[] ans = new SearchForRange().searchRange(temp, 3);
+		for(int x:ans){
+			System.out.print(x+" ");
+		}
+	}
 }
