@@ -24,5 +24,28 @@ public class TreeUpsideDown {
 		root.right = parent;
 		return newNode;
 	}
+	
+	private TreeNode helper2(TreeNode root){
+		if(root==null){
+			return root;
+		}
+		
+		TreeNode current = root;
+		TreeNode next = null;
+		TreeNode temp = null;
+		TreeNode prev = null;
+		
+		while(current!=null){
+			next = current.left;
+			
+			current.left = temp;
+			temp = current.right;
+			current.right = prev;
+			
+			prev = current;
+			current = next;
+		}
+		return prev;
+	}
 
 }

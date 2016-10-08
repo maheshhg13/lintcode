@@ -8,12 +8,12 @@ public class ValidTriangle {
 			return false;
 		}
 		
-		Arrays.sort(edges);
+		Arrays.sort(edges);	
 		for(int i=0;i<=edges.length-3;i++){
 			if(i!=0 && edges[i]==edges[i-1]){
 				continue;
 			}
-			for(int j=i+1;j<=edges.length-3;j++){
+			for(int j=i+1;j<=edges.length-2;j++){
 				if(j!=i+1 && edges[j]==edges[i-1]){
 					continue;
 				}
