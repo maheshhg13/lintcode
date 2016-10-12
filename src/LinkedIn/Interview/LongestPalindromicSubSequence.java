@@ -31,7 +31,7 @@ public class LongestPalindromicSubSequence {
 	}
 	
 	public static void main(String[] args) {
-		int[] arr = new int[]{1,2,4,1};
+		int[] arr = new int[]{4, 1, 2, 3, 4, 5, 6, 7, 4, 3, 4, 4, 4, 4, 4, 4, 4};
 		System.out.println(new LongestPalindromicSubSequence().longestSubSequence(arr));
 	}
 }
